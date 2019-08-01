@@ -317,10 +317,10 @@ let cow = Cow("Mooooo")
 let dog = Dog("woof woof")
 let cat = Cat("nya nya")
 
-var animals = [cow.message,dog.message,cat.message]
+var animals: [Communication] = [cow,dog,cat]
 
 for i in animals{
-print(i)
+print("\(i) \(i.message)")
 }
 
 ```
@@ -366,3 +366,48 @@ Now make HeartRateViewController adopt the protocol you've just created. Inside 
 Now add a property called delegate to HeartRateReceiver that is of type HeartRateReceiverDelegate?. In the didSet of currentHR where currentHR is successfully unwrapped, call heartRateUpdated(to bpm:) on the delegate property.
 
 Finally, return to the line of code just after you initialized an instance of HeartRateReceiver. Initialize an instance of HeartRateViewController. Then, set the delegate property of your instance of HeartRateReceiver to be the instance of HeartRateViewController that you just created. Wait for your code to compile and observe what is printed to the console. Every time that currentHR gets set, you should see both a printout of the most recent heart rate, and the print statement stating that the heart rate was shown to the user.
+
+```swift
+protocol HeartRateReceiverDelegate{
+
+func heartRateUpdated(bpm: Int)
+}
+
+class HeartRateReceiver {
+var delegate: HeartRateReceiverDelegate?
+var currentHR: Int? {
+didSet {
+if let currentHR = currentHR {
+delegate?.heartRateUpdated(bpm: currentHR)
+print("The most recent heart rate reading is \(currentHR).")
+} else {
+print("Looks like we can't pick up a heart rate.")
+}
+}
+}
+
+func startHeartRateMonitoringExample() {
+for _ in 1...10 {
+let randomHR = 60 + Int.random(in: 0...15)
+currentHR = randomHR
+Thread.sleep(forTimeInterval: 2)
+}
+}
+}
+
+class HeartRateViewController: UIViewController, HeartRateReceiverDelegate {
+
+var heartRateLabel: UILabel = UILabel()
+
+func heartRateUpdated(bpm: Int) {
+//        heartRateLabel.text = "The user has been shown a heart rate of \(bpm)"
+print("The user has been shown a heart rate of \(bpm)")
+}
+}
+
+var test = HeartRateReceiver()
+var test1 = HeartRateViewController()
+test.delegate = test1
+
+test.startHeartRateMonitoringExample()
+```
