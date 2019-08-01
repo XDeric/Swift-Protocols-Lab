@@ -144,12 +144,39 @@ a. Create a protocol called `Vehicle` with two requirements:
 b. Define a `Car` struct that implements the `Vehicle` protocol. `numberOfWheels` should return a value of 4,
 and drive() should print "Vroom, vroom!" Create an instance of `Car`, print its number of wheels,
 then call drive().
+```swift
+protocol Vehicle{
+var numberOfWheels: Int {get}
 
+func drive()-> String
+}
+
+struct Car: Vehicle{
+var numberOfWheels: Int
+
+func drive()->String{
+return "Vroom Vroom!"
+}
+}
+
+let car = Car(numberOfWheels: 4)
+print("The car has \(car.numberOfWheels) wheels, \(car.drive())")
+```
 c. Define a Bike struct that implements the `Vehicle` protocol. `numberOfWheels` should return a value of 2,
 and drive() should print "Begin pedaling!". Create an instance of Bike, print its number of wheels,
 then call drive().
+```swift
+struct Bike: Vehicle{
+var numberOfWheels: Int
 
-</br> </br>
+func drive()-> String {
+return "Begin Pedaling!"
+}
+}
+
+let bike = Bike(numberOfWheels: 2)
+print("The car has \(bike.numberOfWheels) wheels, \(bike.drive())")
+```
 
 
 ## Question 3
@@ -167,9 +194,35 @@ protocol Flyable {
  var airspeedVelocity: Double { get }
 }
 ```
+```swift
+protocol Bird {
+var name: String { get }
+var canFly: Bool { get }
+}
 
-</br> </br>
+protocol Flyable {
+var airspeedVelocity: Double { get }
+}
 
+struct Penguin: Bird, Flyable{
+var name: String
+
+var canFly: Bool
+
+var airspeedVelocity: Double
+
+
+}
+struct Eagle: Bird, Flyable{
+var name: String
+
+var canFly: Bool
+
+var airspeedVelocity: Double
+
+
+}
+```
 ## Question 4
 
 a. Create a protocol called `Transformation`.  The protocol should specify a mutating method called transform
@@ -192,7 +245,30 @@ bruceBanner.transform() . // hulk
 bruceBanner.transform()  // notHulk
 ```
 
-</br> </br>
+```swift
+protocol Transformation {
+
+mutating func transform()
+}
+
+enum SuperHero: Transformation{
+case notHulk
+case hulk
+
+func transform(){
+switch self{
+case .hulk:
+print("SMASH!")
+case .notHulk:
+print("MAKE UP!")
+}
+}
+}
+
+var bruceBanner = SuperHero.notHulk
+
+bruceBanner.transform()
+```
 
 
 ## Question 5
@@ -210,7 +286,44 @@ e. `message` should return a unique message for each animal when talk is called.
 f. Put an instance of each of your classes in an array.
 
 g. Iterate over the array and have them print their `message` property
+```swift
+protocol Communication{
+var message: String {get}
+}
 
+class Cow: Communication{
+var message: String
+
+init(_ message: String) {
+self.message = message
+}
+
+}
+class Dog: Communication{
+var message: String
+init(_ message: String) {
+self.message = message
+}
+
+}
+class Cat: Communication{
+var message: String
+init(_ message: String) {
+self.message = message
+}
+}
+
+let cow = Cow("Mooooo")
+let dog = Dog("woof woof")
+let cat = Cat("nya nya")
+
+var animals = [cow.message,dog.message,cat.message]
+
+for i in animals{
+print(i)
+}
+
+```
 
 ## Question 6
 
